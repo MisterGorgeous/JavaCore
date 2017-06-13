@@ -10,7 +10,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class JarClassLoader extends ClassLoader {
-    private HashMap<String, Class<?>> cache = new HashMap<String, Class<?>>();
+    private static HashMap<String, Class<?>> cache = new HashMap<String, Class<?>>();
     private String jarFileName;
     private String packageName;
     private static String WARNING = "Warning : No jar file found. Packet unmarshalling won't be possible. Please verify your classpath";
@@ -33,12 +33,13 @@ public class JarClassLoader extends ClassLoader {
                 JarEntry jarEntry = (JarEntry) entries.nextElement();
 
                 String jarEntryName = jarEntry.getName();
-
+                String str = "compiled." + stripClassName(normalize(jarEntry.getName()));
 
                 if (match(normalize(jarEntryName), packageName)) {
                     byte[] classData = loadClassData(jarFile, jarEntry);
                     if (classData != null) {
-                        Class<?> clazz = defineClass(stripClassName(normalize(jarEntry.getName())), classData, 0, classData.length);
+                        //Class<?> clazz = defineClass(stripClassName(normalize(jarEntry.getName())), classData, 0, classData.length);
+                        Class<?> clazz = defineClass(str, classData, 0, classData.length);
                         cache.put(clazz.getName(), clazz);
                         System.out.println("== class " + clazz.getName() + " loaded in cache");
                     }

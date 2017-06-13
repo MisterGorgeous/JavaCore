@@ -11,7 +11,7 @@ public class ActionJar {
 
         Class<?> clazz = null;
         try {
-            clazz = jarClassLoader.loadClass("Example");
+            clazz = jarClassLoader.loadClass("compiled.JustExample");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
